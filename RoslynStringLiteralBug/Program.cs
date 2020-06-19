@@ -12,28 +12,18 @@ namespace RoslynStringLiteralBug
                 "var list = new List<string>();",
                 "list.Add(\"found a bug?\");"
             });
-            OutputTokens(code);
             
-            code = string.Join(Environment.NewLine, new[]
-            {
-                "var list = new List<string>();",
-                "var bug = \"found a bug?\";",
-                "list.Add(bug);"
-            });
             OutputTokens(code);
         }
 
         static void OutputTokens(string code)
         {
-            Console.WriteLine($"Output tokens for:");
-            Console.WriteLine(code);
-            Console.WriteLine();
-            
             var syntaxTree = CSharpSyntaxTree.ParseText(code);
-
+            var id = 0;
+            
             foreach (var token in syntaxTree.GetRoot().DescendantTokens())
             {
-                Console.WriteLine($"{token.Kind()}: '{token}'");
+                Console.WriteLine($"{id++:D2} {token.Kind(),-20} '{token}'");
             }
         }
     }
